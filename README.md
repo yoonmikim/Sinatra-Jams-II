@@ -63,3 +63,5 @@ OR
 ```
 
 If you're using the checkbox method, think about what your params looks like after the form is submitted. What does the `instruments[]` imply about the information put into params? How can you use the information put into `params` to link the artist with the selected instruments? Also, is there a way you can dynamically check the boxes for the instruments that an artist plays?
+
+If you were able to associate users with instruments, consider building out full CRUD for the `Instrument` model! Best of luck!
