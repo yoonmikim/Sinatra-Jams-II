@@ -4,3 +4,15 @@
 <br/>
 <input type="text" name="artist[bio]" value="<%= @artist.bio %>" placeholder="Bio of Artist"/>
 <br/>
+
+<% @instruments.each do |instrument| %>
+  <p>
+    <%= instrument.name %>
+    <input
+      <%= "checked" if @artist.instruments.include?(instrument) %>
+      type="checkbox"
+      name="instruments[]"
+      value="<%= instrument.id %>"
+    >
+  </p>
+<% end %>
