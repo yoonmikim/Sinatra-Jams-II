@@ -1,36 +1,65 @@
-#  🎸Jams 🎸
-Welcome to your first day of work at Jams Incorporated. Today, you are tasked with creating an application that can keep track of all the musicians that Jams Inc. produces.
+#  🎧 Jams 🎧
+Welcome to your second day of work at Jams Incorporated! Your manager is very impressed with the work that you did yesterday in setting up the website for Jams Incorporated's `Artist`s, so they have tasked you with a couple of more tasks to make the website bigger and better.
 
-Jams Inc. works with tens and tens of artists, so keeping track of their `name`, `age` and `bio` is really important to the company.
+Your manager says that in addition to logging an `Artist` with their `name`, `bio` and `age`, the website should be able to log the `Instrument`s that each artist plays. And because Jams Incorporated works with only the best of the best, an artist can play multiple instruments. But keep in mind that with popular instruments like the piano and the keytar, there can be multiple artists playing them. 🎹
 
-![Sinatra](https://raw.githubusercontent.com/bmizerany/sinatra/work/lib/sinatra/images/404.png)
+At this point, you should be considering the relationship between an `Artist` instance and an `Instrument` instance. How would an artist keep track of all the instruments that they play and how would you know about all the artists playing a specific instruments?
 
-## Create & Read 📓
-In keeping tradition with [RESTful](http://www.restular.com/) routes, Jams Inc. wants you to build out the following deliverables:
+## Setting the Stage
 
-* A database of `Artists` that will allow for a `name` string, `age` integer and `bio` string. If you created your database properly, you should be able to seed the database with the given `seeds.rb` file.
+In recording the instruments in the database, Jams Inc. would like to see the following deliverables implemented:
 
-* An index page that displays the names of all the artists in your database.
+* A database of `Instrument`s that will allow for a `name` string and a `brand` string. If you create your database properly, you should be able to seed your database with the given `seeds.rb` file.
 
-  * A nice to have feature: On the index page, clicking on the name of the artist would link me to their show page (see below).
+* A feature to keep track of which artists play which instruments. This feature should be designed with the intention to keep the Single Source of Truth in regards to their relationship intact, which means you may need to alter your database somehow. Where should this relationship live?
 
-
-* A dynamically generated show page for a single artist that shows their `name`, `age` and `bio`.
-
-* A form to log a new artist with their `name`, `age` and `bio`. After the form is submitted, the user should be redirected to the saved artist's show page.
-
-After you meet these deliverables, save and commit your code. Celebrate a little because you have now finished the *CR* part of your *CRUD* application. Yay! 💯
-
-## Update & Delete 🗑
-After a little celebration, your manager comes up to you and asks if you can implement some more features. Eager to make your application bigger and better, you say yes. Here are some more deliverables that your manager wants you to build out:
-
-* A dynamically generated edit-form for a single artist that is auto populated with the selected artist's information. After the edit-form is submitted, the site should redirect the user back to the show page, showing the new updated information.
-
-  * A nice to have feature: On the artist's show page, have a link that will take the user to that artist's edit page.
+  * After you figure out a way to keep track of which artists play which instruments, alter the `seeds.rb` file so that some artists and instruments are related. Implement this however way it makes sense to you, but make sure that you checkout your relationships in  `rake console`.
 
 
-* A delete functionality that will be able to delete an artist from the database. This can be just a button on the artist's show page. When the button is clicked, the shown artist should be deleted and the webpage should be redirected to the index page of all the artists.
+* In a specific artist's show page, the names of the instruments that the artist plays should be dynamically listed. When you're building out this feature, make sure that you're being cognizant of the MVC framework.
 
-Save, commit and push your code! If you have met all these deliverables, you have accomplished CRUD for the `Artist` model, which is not an easy feat. Celebrate a little! 🎉
+  * A nice to have feature: On the artist's show page, have each of the instruments listed link to the respective show page of the instrument (see below).
 
-After celebrating, you might want to consider using a separate Artist controller, if you have already not implemented it. As your application grows and you have more and more models in your domain, having separate controllers will help you follow the Single Responsibility Principle. 
+
+* A dynamically generated show page for a single instrument that show its `name` and `brand`, as well as a list of artists that play that specific instrument.
+
+* An index page for all the instruments in your database.
+
+  * A nice to have feature: On the index page, clicking on the name of the instrument would link the user to the instrument's show page.
+
+
+After you have completed these deliverables, save and commit your code! Make sure everyone you're working with feels comfortable with the code and then, take a deep breath because we still have some work to do! 😤
+
+
+## Creating the Associations
+
+Your manager loves the work that you have done so far, but at the moment, there isn't a way for a user to log a relationship between an artist and an instrument.
+
+We can accomplish this one of two ways:
+
+* Have a form that will take in an artist ID and an instrument ID and create the association between the two. Rather than having the user type in the IDs as numbers, consider implementing a [`select`](https://www.w3schools.com/html/html_form_elements.asp) tag for a better user experience.
+
+```HTML
+<form>
+  <select name="artist_id">
+    <!-- How would you dynamically generate <option/> elements for each of the artist instances? -->
+  </select>
+
+  <select name="instrument_id">
+    <!-- How would you dynamically generate <option/> elements for each of the instrument instances? -->
+  </select>
+</form>
+```
+
+OR
+
+* Have a form in the artist's edit page with checkboxes of all the instruments. When the form is submitted, the artist being edited should be associated with the correct instruments.
+
+```HTML
+<form>
+  <!-- How would you dynamically generate checkboxes for each of the instrument instances -->
+  <input type="checkbox" name="instruments[]" value="<%= instrument.id %>">
+</form>
+```
+
+If you're using the checkbox method, think about what your params looks like after the form is submitted. What does the `instruments[]` imply about the information put into params? How can you use the information put into `params` to link the artist with the selected instruments? Also, is there a way you can dynamically check the boxes for the instruments that an artist plays?
